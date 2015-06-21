@@ -1,0 +1,17 @@
+{
+	"name": "IT1_Beleg",
+	"version": "0.0.0",
+	"authors": [
+		"Markus Klemm <markus@markusklemm.net>"
+	],
+	"description": "Beleg für Internet-Technologien 1",
+	"private": true,
+	"license": "LGPL",
+	"ignore": [
+		"**/.*",
+		"node_modules",
+		"bower_components",
+		"test",
+		"tests"
+	]
+}
