@@ -21,16 +21,15 @@
             <a class="navbar-brand" href="#">Vokabeltrainer s70357</a>
         </div>
         <ul class="nav navbar-nav">
-            <li class="active"><a href="#">Home</a></li>
-            <li><a href="#">Auswahl</a></li>
-            <li><a href="#">Statistik</a></li>
+            <li id="lesson_menu"><a href="#">Auswahl</a></li>
+            <li id="stats_menu"><a href="#">Statistik</a></li>
             <li><a href="#">Setup</a></li>
         </ul>
     </div>
 </nav>
 
 
-<div class="container-fluid">
+<div class="container-fluid" id="lesson_choice_page">
     <div class="row">
         <div class="col-md-12">
             <h1>Lektionen</h1>
@@ -42,6 +41,16 @@
         </div>
     </div>
 </div>
+
+<div class="container-fluid hidden" id="stats_page">
+    <div class="row">
+        <div class="col-md-12">
+            <h1>Stats</h1>
+            I'm the stats page
+        </div>
+    </div>
+</div>
+
 
 </body>
 </html>
