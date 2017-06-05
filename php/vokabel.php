@@ -1,4 +1,6 @@
 <?php
+ini_set('display_errors', 'On');
+error_reporting(E_ALL);
 $http_method = $_SERVER['REQUEST_METHOD'];
 $request = explode('/', trim($_SERVER['PATH_INFO'],'/'));
 $input = json_decode(file_get_contents('php://input'),true);
@@ -6,9 +8,9 @@ $input = json_decode(file_get_contents('php://input'),true);
 class lesson
 {
     public $name = '';
-    public $language1 = array('');
-    public $language2 = array('');
-    public $pronunciation = array('');
+    public $language1 = array();
+    public $language2 = array();
+    public $pronunciation = array();
 
 }
 
@@ -22,8 +24,26 @@ function get_lessons() {
         }
         $lesson = new lesson();
         $lesson->name = preg_replace('#.txt$#', '', $iterator->getFilename());
-        $lessons[] = $lesson;
 
+        $file = fopen($fileInfo->getPathname(),'r');
+        while (($csv_values = fgetcsv($file)) !== FALSE)
+        {
+            if (count($csv_values) >= 1)
+            {
+                ($lesson->language1)[] = $csv_values[0];
+            }
+            if (count($csv_values) >= 2)
+            {
+                ($lesson->language2)[] = $csv_values[1];
+            }
+            if (count($csv_values) >= 3)
+            {
+                ($lesson->pronunciation)[] = $csv_values[2];
+            }
+        }
+
+        fclose($file);
+        $lessons[] = $lesson;
     }
     return json_encode($lessons);
 }
