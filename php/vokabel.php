@@ -8,10 +8,8 @@ $input = json_decode(file_get_contents('php://input'),true);
 class lesson
 {
     public $name = '';
-    public $language1 = array();
-    public $language2 = array();
-    public $pronunciation = array();
-
+    public $translations = array();
+    public $pronunciations = array();
 }
 
 function get_lessons() {
@@ -28,22 +26,18 @@ function get_lessons() {
         $file = fopen($fileInfo->getPathname(),'r');
         while (($csv_values = fgetcsv($file)) !== FALSE)
         {
-            if (count($csv_values) >= 1)
-            {
-                ($lesson->language1)[] = $csv_values[0];
-            }
             if (count($csv_values) >= 2)
             {
-                ($lesson->language2)[] = $csv_values[1];
+                ($lesson->translations)[$csv_values[0]] = $csv_values[1];
             }
             if (count($csv_values) >= 3)
             {
-                ($lesson->pronunciation)[] = $csv_values[2];
+                ($lesson->pronunciations)[$csv_values[0]] = $csv_values[2];
             }
         }
 
         fclose($file);
-        $lessons[] = $lesson;
+        $lessons[$lesson->name] = $lesson;
     }
     return json_encode($lessons);
 }
@@ -57,6 +51,7 @@ switch ($http_method) {
 }
 
 header('HTTP/1.1 200');
+header('Access-Control-Allow-Origin: *');
 header("Content-Type: application/json; charset=UTF-8");
 echo $json;
 ?>
