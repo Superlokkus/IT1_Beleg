@@ -2,6 +2,10 @@
 
 const lessonEndpoint = "https://www2.htw-dresden.de/~s70357/vokabel.php/";
 
+const lesson = function(lessonName) {
+
+};
+
 $(function(){
     $("#stats_menu").click(function () {
         $("#stats_page").removeClass("hidden");
@@ -33,6 +37,7 @@ $(function(){
             $("#lesson_list_div").append(lesson_btn);
         }
     });
+    console.log($("#vokabel_text").text());
 
 });
 
