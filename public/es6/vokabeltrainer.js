@@ -2,12 +2,29 @@
 
 const lessonEndpoint = "https://www2.htw-dresden.de/~s70357/vokabel.php/";
 
-const lessonStart = function(lesson) {
-    $("#lesson_title").text(lesson.name);
 
+const askQuestion = function(lesson, nextQuestion, btoa) {
+    const entries = Object.entries(lesson.translations);
+    if(nextQuestion >= entries.length){
+        return;//TODO Goto stats
+    }
+    $("#vokabel_text").text(entries[nextQuestion][0]);
+    $("#pronounce_text").text(lesson.pronunciations[entries[nextQuestion][0]]);
+
+};
+
+const lessonStart = function(lesson) {
+    if (lesson.translations.length <= 0){
+        alert("No translations in lesson " + lesson.name);
+        return;
+    }
+    $("#lesson_title").text(lesson.name);
+    $("#ab").addClass("active");
+    $("#ba").removeClass("active");
     $("#lesson_choice_page").addClass("hidden");
     $("#lesson_page").removeClass("hidden");
 
+    askQuestion(lesson,0,false);
 
 };
 
