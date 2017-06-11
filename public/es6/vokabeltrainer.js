@@ -9,7 +9,27 @@ const askQuestion = function(lesson, nextQuestion, btoa) {
         return;//TODO Goto stats
     }
     $("#vokabel_text").text(entries[nextQuestion][0]);
+    $("#pronounce_text").text("");
     $("#pronounce_text").text(lesson.pronunciations[entries[nextQuestion][0]]);
+    $("#lesson_page_answers").empty();
+    const choiceCount = Math.min(5,entries.length);
+    const rightAnswerPos = Math.floor(Math.random() * 10 % choiceCount);
+    for (let i = 0; i < choiceCount; ++i){
+        let answer;
+        if (i == rightAnswerPos){
+            answer = entries[nextQuestion][1];
+        } else {
+            let alternative;
+            do {
+                alternative = Math.floor(Math.random() * 10 % entries.length);
+                answer = entries[alternative][1];
+            } while (alternative == rightAnswerPos);
+        }
+        $("#lesson_page_answers").append('<div class="radio"> <label> <input type="radio" name="optionsAnswers" value="'
+            + answer
+            + '" checked>'
+            + answer +"</label> </div> ");
+    }
 
 };
 
