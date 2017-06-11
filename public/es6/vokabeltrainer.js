@@ -2,8 +2,8 @@
 
 const lessonEndpoint = "https://www2.htw-dresden.de/~s70357/vokabel.php/";
 
-const lesson = function(lessonName) {
-
+const lessonStart = function(lesson) {
+    console.log("lesson called with" + lesson.name);
 };
 
 $(function(){
@@ -33,8 +33,13 @@ $(function(){
         console.log(status);
         for (let i in data){
             let lesson = data[i];
-            let lesson_btn = $('<button type="button" id="btn_1" class="btn">' + lesson.name + "</button>");
+            let lesson_btn = $('<button type="button" id="btn_lesson_' + i + '" class="btn btn-default">'
+                + lesson.name + "</button>");
             $("#lesson_list_div").append(lesson_btn);
+            $("#btn_lesson_" + i).click(function(){
+                console.log("Clicked lesson " + i);
+                lessonStart(lesson);
+            });
         }
     });
     console.log($("#vokabel_text").text());
