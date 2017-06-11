@@ -3,7 +3,12 @@
 const lessonEndpoint = "https://www2.htw-dresden.de/~s70357/vokabel.php/";
 
 const lessonStart = function(lesson) {
-    console.log("lesson called with" + lesson.name);
+    $("#lesson_title").text(lesson.name);
+
+    $("#lesson_choice_page").addClass("hidden");
+    $("#lesson_page").removeClass("hidden");
+
+
 };
 
 $(function(){
@@ -11,16 +16,19 @@ $(function(){
         $("#stats_page").removeClass("hidden");
         $("#lesson_choice_page").addClass("hidden");
         $("#setup_page").addClass("hidden");
+        $("#lesson_page").addClass("hidden");
     });
     $("#lesson_menu").click(function () {
         $("#lesson_choice_page").removeClass("hidden");
         $("#stats_page").addClass("hidden");
         $("#setup_page").addClass("hidden");
+        $("#lesson_page").addClass("hidden");
     });
     $("#setup_menu").click(function () {
         $("#setup_page").removeClass("hidden");
         $("#stats_page").addClass("hidden");
         $("#lesson_choice_page").addClass("hidden");
+        $("#lesson_page").addClass("hidden");
     });
 
     let lessonCall = $.ajax(lessonEndpoint,{dataType: "json"});
