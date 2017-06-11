@@ -27,7 +27,7 @@ const askQuestion = function(lesson, nextQuestion, btoa) {
         }
         $("#lesson_page_answers").append('<div class="radio"> <label> <input type="radio" name="optionsAnswers" value="'
             + answer
-            + '" checked>'
+            + '">'
             + answer +"</label> </div> ");
     }
 
@@ -66,6 +66,10 @@ $(function(){
         $("#stats_page").addClass("hidden");
         $("#lesson_choice_page").addClass("hidden");
         $("#lesson_page").addClass("hidden");
+    });
+
+    $("#log_answer_btn").click(()=> {
+        console.log($("#lesson_page_answers input:radio:checked").val());
     });
 
     let lessonCall = $.ajax(lessonEndpoint,{dataType: "json"});
