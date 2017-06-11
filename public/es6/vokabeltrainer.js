@@ -31,6 +31,16 @@ const askQuestion = function(lesson, nextQuestion, btoa) {
             + answer +"</label> </div> ");
     }
 
+    $("#log_answer_btn").off("click");
+    $("#log_answer_btn").click(()=> {
+        const choosen = $("#lesson_page_answers input:radio:checked").val();
+        resultSite(choosen,entries[nextQuestion][1],()=>{
+            $("#lesson_page").removeClass("hidden");
+            $("#lesson_result").addClass("hidden");
+            askQuestion(lesson, ++nextQuestion, btoa);
+        });
+    });
+
 };
 
 const lessonStart = function(lesson) {
@@ -48,28 +58,46 @@ const lessonStart = function(lesson) {
 
 };
 
+const resultSite = function(choosen,expected,callback){
+    $("#lesson_page").addClass("hidden");
+    $("#lesson_result").removeClass("hidden");
+    if (choosen != expected) {
+        $("#lesson_result_well").css("background-color","red");
+        $("#lesson_result_text").text("Falsch");
+    } else {
+        $("#lesson_result_well").css("background-color","green");
+        $("#lesson_result_text").text("Richtig");
+    }
+    $("#lesson_result_choosen").text(choosen);
+    $("#lesson_result_expected").text(expected);
+    $("#continue_btn").off("click");
+    $("#continue_btn").click(()=> {
+        callback();
+    });
+
+};
+
 $(function(){
     $("#stats_menu").click(function () {
         $("#stats_page").removeClass("hidden");
         $("#lesson_choice_page").addClass("hidden");
         $("#setup_page").addClass("hidden");
         $("#lesson_page").addClass("hidden");
+        $("#lesson_result").addClass("hidden");
     });
     $("#lesson_menu").click(function () {
         $("#lesson_choice_page").removeClass("hidden");
         $("#stats_page").addClass("hidden");
         $("#setup_page").addClass("hidden");
         $("#lesson_page").addClass("hidden");
+        $("#lesson_result").addClass("hidden");
     });
     $("#setup_menu").click(function () {
         $("#setup_page").removeClass("hidden");
         $("#stats_page").addClass("hidden");
         $("#lesson_choice_page").addClass("hidden");
         $("#lesson_page").addClass("hidden");
-    });
-
-    $("#log_answer_btn").click(()=> {
-        console.log($("#lesson_page_answers input:radio:checked").val());
+        $("#lesson_result").addClass("hidden");
     });
 
     let lessonCall = $.ajax(lessonEndpoint,{dataType: "json"});
