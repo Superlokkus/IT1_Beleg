@@ -2,11 +2,24 @@
 
 const lessonEndpoint = "https://www2.htw-dresden.de/~s70357/vokabel.php/";
 
+const overallResult = function(lessonName,correctCount,count){
+    $("#continue_btn").off("click");
+    $("#send_results").click( function () {
+        $(this).button("loading");
+        callStatsPage();
+    });
+    $("#overall_lesson").text(lessonName);
+    $("#overall_result").text(correctCount + " von " + count);
+    $("#lesson_page").addClass("hidden");
+    $("#overall_page").removeClass("hidden");
+};
 
-const askQuestion = function(lesson, nextQuestion, btoa) {
+
+const askQuestion = function(lesson, nextQuestion, btoa,correctCount) {
     const entries = Object.entries(lesson.translations);
     if(nextQuestion >= entries.length){
-        return;//TODO Goto stats
+        console.log(correctCount,"/",nextQuestion);
+        return overallResult(lesson.name,correctCount,nextQuestion);
     }
     $("#vokabel_text").text(entries[nextQuestion][0]);
     $("#pronounce_text").text("");
@@ -37,7 +50,10 @@ const askQuestion = function(lesson, nextQuestion, btoa) {
         resultSite(choosen,entries[nextQuestion][1],()=>{
             $("#lesson_page").removeClass("hidden");
             $("#lesson_result").addClass("hidden");
-            askQuestion(lesson, ++nextQuestion, btoa);
+            if (choosen == entries[nextQuestion][1]){
+                ++correctCount;
+            }
+            askQuestion(lesson, ++nextQuestion, btoa,correctCount);
         });
     });
 
@@ -54,7 +70,7 @@ const lessonStart = function(lesson) {
     $("#lesson_choice_page").addClass("hidden");
     $("#lesson_page").removeClass("hidden");
 
-    askQuestion(lesson,0,false);
+    askQuestion(lesson,0,false,0);
 
 };
 
@@ -83,10 +99,10 @@ const callStatsPage = function () {
     $("#setup_page").addClass("hidden");
     $("#lesson_page").addClass("hidden");
     $("#lesson_result").addClass("hidden");
-}
+};
 
 $(function(){
-    $("#stats_menu").click(callStatsPage());
+    $("#stats_menu").click(callStatsPage);
 
     $("#lesson_menu").click(function () {
         $("#lesson_choice_page").removeClass("hidden");
@@ -94,6 +110,7 @@ $(function(){
         $("#setup_page").addClass("hidden");
         $("#lesson_page").addClass("hidden");
         $("#lesson_result").addClass("hidden");
+        $("#overall_page").addClass("hidden");
     });
     $("#setup_menu").click(function () {
         $("#setup_page").removeClass("hidden");
@@ -101,6 +118,7 @@ $(function(){
         $("#lesson_choice_page").addClass("hidden");
         $("#lesson_page").addClass("hidden");
         $("#lesson_result").addClass("hidden");
+        $("#overall_page").addClass("hidden");
     });
 
     let lessonCall = $.ajax(lessonEndpoint,{dataType: "json"});
