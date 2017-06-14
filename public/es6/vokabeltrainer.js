@@ -77,14 +77,17 @@ const resultSite = function(choosen,expected,callback){
 
 };
 
+const callStatsPage = function () {
+    $("#stats_page").removeClass("hidden");
+    $("#lesson_choice_page").addClass("hidden");
+    $("#setup_page").addClass("hidden");
+    $("#lesson_page").addClass("hidden");
+    $("#lesson_result").addClass("hidden");
+}
+
 $(function(){
-    $("#stats_menu").click(function () {
-        $("#stats_page").removeClass("hidden");
-        $("#lesson_choice_page").addClass("hidden");
-        $("#setup_page").addClass("hidden");
-        $("#lesson_page").addClass("hidden");
-        $("#lesson_result").addClass("hidden");
-    });
+    $("#stats_menu").click(callStatsPage());
+
     $("#lesson_menu").click(function () {
         $("#lesson_choice_page").removeClass("hidden");
         $("#stats_page").addClass("hidden");

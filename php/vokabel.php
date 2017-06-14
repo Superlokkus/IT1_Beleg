@@ -2,8 +2,6 @@
 ini_set('display_errors', 'On');
 error_reporting(E_ALL);
 $http_method = $_SERVER['REQUEST_METHOD'];
-$request = explode('/', trim($_SERVER['PATH_INFO'],'/'));
-$input = json_decode(file_get_contents('php://input'),true);
 
 class lesson
 {
@@ -21,7 +19,7 @@ function get_lessons() {
             continue;
         }
         $lesson = new lesson();
-        $lesson->name = preg_replace('#.txt$#', '', $iterator->getFilename());
+        $lesson->name = preg_replace('/.txt$/', '', $iterator->getFilename());
 
         $file = fopen($fileInfo->getPathname(),'r');
         while (($csv_values = fgetcsv($file)) !== FALSE)
@@ -47,11 +45,21 @@ $json = '{}';
 switch ($http_method) {
     case 'GET':
         $json = get_lessons();
+        header('HTTP/1.1 200');
+        header('Access-Control-Allow-Origin: *');
+        header("Content-Type: application/json; charset=UTF-8");
+        echo $json;
+        break;
+    case 'HEAD':
+        header('HTTP/1.1 200');
+        header('Access-Control-Allow-Origin: *');
+        header("Content-Type: application/json; charset=UTF-8");
+        break;
+    default:
+        header('HTTP/1.1 405');
+        header('Allow: GET, HEAD');
         break;
 }
 
-header('HTTP/1.1 200');
-header('Access-Control-Allow-Origin: *');
-header("Content-Type: application/json; charset=UTF-8");
-echo $json;
+
 ?>
