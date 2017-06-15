@@ -36,6 +36,13 @@ switch ($http_method) {
         header("Content-Type: application/json; charset=UTF-8");
         put_stats($body);
         break;
+    case 'OPTIONS':
+        header('HTTP/1.1 200');
+        header('Access-Control-Allow-Methods: PUT, GET, OPTIONS');
+        header('Access-Control-Allow-Origin: *');
+        header('Access-Control-Allow-Headers: Content-Type, Access-Control-Allow-Headers, Authorization, X-Requested-With');
+        header('Allow: GET, HEAD, PUT');
+        break;
     default:
         header('HTTP/1.1 405');
         header('Allow: GET, HEAD, PUT');

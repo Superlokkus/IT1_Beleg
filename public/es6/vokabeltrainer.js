@@ -1,12 +1,23 @@
 "use strict";
 
 const lessonEndpoint = "https://www2.htw-dresden.de/~s70357/vokabel.php/";
+const statsEndpoint = "https://www2.htw-dresden.de/~s70357/vokabel_stats.php/";
 
 const overallResult = function(lessonName,correctCount,count){
     $("#continue_btn").off("click");
     $("#send_results").click( function () {
         $(this).button("loading");
-        callStatsPage();
+        let stats = {"lesson_Name": lessonName, "correct_count": correctCount, "answered_count": count};
+        let statsCall = $.ajax(statsEndpoint,{contentType: "application/json; charset=UTF-8", method: "PUT",
+            processData: false, data: JSON.stringify(stats)});
+        statsCall.fail((jqXHR, status, error) => {
+            console.log(status);
+            console.log(error);
+        });
+
+        statsCall.done((data,status) => {
+            callStatsPage();
+        });
     });
     $("#overall_lesson").text(lessonName);
     $("#overall_result").text(correctCount + " von " + count);
