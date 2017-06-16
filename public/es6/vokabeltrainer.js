@@ -31,11 +31,29 @@ const overallResult = function(lessonName,correctCount,count){
 
 
 const askQuestion = function(lesson, nextQuestion, btoa,correctCount) {
-    const entries = Object.entries(lesson.translations);
+    let entries = Object.entries(lesson.translations);
     if(nextQuestion >= entries.length){
         console.log(correctCount,"/",nextQuestion);
         return overallResult(lesson.name,correctCount,nextQuestion);
     }
+    $("#ab").off("click");
+    $("#ba").off("click");
+    $("#ab").click(() => {
+        askQuestion(lesson,nextQuestion,false,correctCount);
+        $("#ab").addClass("active");
+        $("#ba").removeClass("active");
+    });
+    $("#ba").click(() => {
+        askQuestion(lesson,nextQuestion,true,correctCount);
+        $("#ba").addClass("active");
+        $("#ab").removeClass("active");
+    });
+    if (btoa) {
+        entries = Object.keys(lesson.translations)
+            .reduce((obj, key) => Object.assign({}, obj, { [lesson.translations[key]]: key }), {});
+        entries = Object.entries(entries);
+    }
+
     $("#vokabel_text").text(entries[nextQuestion][0]);
     $("#pronounce_text").text("");
     $("#pronounce_text").text(lesson.pronunciations[entries[nextQuestion][0]]);
