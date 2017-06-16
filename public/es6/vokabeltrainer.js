@@ -5,17 +5,21 @@ const statsEndpoint = "https://www2.htw-dresden.de/~s70357/vokabel_stats.php/";
 
 const overallResult = function(lessonName,correctCount,count){
     $("#continue_btn").off("click");
+    $("#send_results").button("reset");
     $("#send_results").click( function () {
         $(this).button("loading");
-        let stats = {"lesson_Name": lessonName, "correct_count": correctCount, "answered_count": count};
+        let stats = {"lesson_name": lessonName, "correct_count": correctCount, "answered_count": count};
         let statsCall = $.ajax(statsEndpoint,{contentType: "application/json; charset=UTF-8", method: "PUT",
             processData: false, data: JSON.stringify(stats)});
         statsCall.fail((jqXHR, status, error) => {
             console.log(status);
             console.log(error);
+            alert("Sending stat failed with " + status + " and error " + error);
+            $("#send_results").button("reset");
         });
 
         statsCall.done((data,status) => {
+            console.log("Sending stats succeded with " + status);
             callStatsPage();
         });
     });

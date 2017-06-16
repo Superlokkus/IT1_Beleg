@@ -2,7 +2,7 @@
 ini_set('display_errors', 'On');
 error_reporting(E_ALL);
 $http_method = $_SERVER['REQUEST_METHOD'];
-$body = json_decode(file_get_contents('php://input'));
+$body = file_get_contents('php://input');
 
 class stat
 {
@@ -13,8 +13,10 @@ class stat
 
 function put_stats($stat)
 {
+    $stat = json_decode($stat);
     $stats = json_decode(file_get_contents("stats.json"),true);
-    $stats[$stat->lesson_name] = $stat;
+    $name = $stat->lesson_name;
+    $stats[$name] = $stat;
     file_put_contents("stats.json",json_encode($stats));
 }
 
@@ -33,7 +35,6 @@ switch ($http_method) {
     case 'PUT':
         header('HTTP/1.1 200');
         header('Access-Control-Allow-Origin: *');
-        header("Content-Type: application/json; charset=UTF-8");
         put_stats($body);
         break;
     case 'OPTIONS':
