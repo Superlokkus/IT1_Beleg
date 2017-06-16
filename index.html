@@ -108,19 +108,27 @@
 </div>
 
 <div class="container-fluid hidden" id="stats_page">
-    <ul class="list-group" id="stats_group">
-    </ul>
+    <div class="row">
+        <div class="col-md-12">
+            <h1>Statistik</h1>
+            <ul class="list-group" id="stats_group">
+            </ul>
+        </div>
+    </div>
 </div>
 
 <div class="container-fluid hidden" id="setup_page">
     <div class="row">
         <div class="col-md-12">
-            <h1>Stats</h1>
-            I'm the setup page
+            <h1>Lektions-Upload</h1>
+            <form enctype="multipart/form-data">
+                <input name="file" type="file"/>
+                <input type="button" value="Upload"/>
+            </form>
+            <progress></progress>
         </div>
     </div>
 </div>
-
 
 
 </body>

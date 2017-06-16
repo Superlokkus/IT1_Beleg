@@ -136,25 +136,13 @@ const callStatsPage = function () {
     });
 };
 
-$(function(){
-    $("#stats_menu").click(callStatsPage);
-
-    $("#lesson_menu").click(function () {
-        $("#lesson_choice_page").removeClass("hidden");
-        $("#stats_page").addClass("hidden");
-        $("#setup_page").addClass("hidden");
-        $("#lesson_page").addClass("hidden");
-        $("#lesson_result").addClass("hidden");
-        $("#overall_page").addClass("hidden");
-    });
-    $("#setup_menu").click(function () {
-        $("#setup_page").removeClass("hidden");
-        $("#stats_page").addClass("hidden");
-        $("#lesson_choice_page").addClass("hidden");
-        $("#lesson_page").addClass("hidden");
-        $("#lesson_result").addClass("hidden");
-        $("#overall_page").addClass("hidden");
-    });
+const callLessonPage = function() {
+    $("#lesson_choice_page").removeClass("hidden");
+    $("#stats_page").addClass("hidden");
+    $("#setup_page").addClass("hidden");
+    $("#lesson_page").addClass("hidden");
+    $("#lesson_result").addClass("hidden");
+    $("#overall_page").addClass("hidden");
 
     let lessonCall = $.ajax(lessonEndpoint,{dataType: "json"});
     lessonCall.fail((jqXHR, status, error) => {
@@ -164,6 +152,7 @@ $(function(){
     });
 
     lessonCall.done((data,status) => {
+        $("#lesson_list_div").empty();
         console.log(status);
         for (let i in data){
             let lesson = data[i];
@@ -176,8 +165,22 @@ $(function(){
             });
         }
     });
-    console.log($("#vokabel_text").text());
+};
 
+$(function(){
+    $("#stats_menu").click(callStatsPage);
+
+    $("#lesson_menu").click(callLessonPage);
+    $("#setup_menu").click(function () {
+        $("#setup_page").removeClass("hidden");
+        $("#stats_page").addClass("hidden");
+        $("#lesson_choice_page").addClass("hidden");
+        $("#lesson_page").addClass("hidden");
+        $("#lesson_result").addClass("hidden");
+        $("#overall_page").addClass("hidden");
+    });
+
+    callLessonPage();
 });
 
 
