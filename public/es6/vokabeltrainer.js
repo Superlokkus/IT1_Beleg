@@ -114,6 +114,26 @@ const callStatsPage = function () {
     $("#setup_page").addClass("hidden");
     $("#lesson_page").addClass("hidden");
     $("#lesson_result").addClass("hidden");
+
+    $("#stats_group").empty();
+
+    let statsCall = $.ajax(statsEndpoint,{dataType: "json"});
+    statsCall.fail((jqXHR, status, error) => {
+        console.log(status);
+        console.log(error);
+        alert("Getting the stats failed with " + status + " and error" + error);
+    });
+
+    statsCall.done((data,status) => {
+        console.log(status);
+        for (let i in data){
+            let stat = data[i];
+            let statEntry = $('<li class="list-group-item"> <span class="badge"> '
+                + stat.correct_count + "/" + stat.answered_count
+                + "</span>" +  stat.lesson_name  +"</li>");
+            $("#stats_group").append(statEntry);
+        }
+    });
 };
 
 $(function(){
@@ -140,6 +160,7 @@ $(function(){
     lessonCall.fail((jqXHR, status, error) => {
         console.log(status);
         console.log(error);
+        alert("Getting lessons failed with " + status + " and error " + error);
     });
 
     lessonCall.done((data,status) => {
