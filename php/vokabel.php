@@ -40,6 +40,35 @@ function get_lessons() {
     return json_encode($lessons);
 }
 
+function post_lesson()
+{
+    if (!isset($_FILES['file']['error']) || $_FILES['file']['error'] != UPLOAD_ERR_OK || $_FILES['file']['size'] > 10000) {
+        header('HTTP/1.1 403');
+        return;
+    }
+    if (false === $ext = array_search(
+            $_FILES['file']['type'],
+            array(
+                'text' => 'text/plain',
+                'csv' => 'text/csv'
+            ),
+            true
+        )
+    ) {
+        header('HTTP/1.1 415');
+        return;
+    }
+
+    $uploaddir = "/home/rex/fi3/ia13/s70357/public_html/lessons/";
+    $uploadfilename = preg_replace('/.[[:alnum:]]*$/', ".txt" , basename($_FILES['file']['name']));
+
+    if (!move_uploaded_file($_FILES['file']['tmp_name'], $uploaddir . $uploadfilename)) {
+        header('HTTP/1.1 500');
+        return;
+    }
+    header('HTTP/1.1 200');
+}
+
 
 $json = '{}';
 switch ($http_method) {
@@ -55,9 +84,20 @@ switch ($http_method) {
         header('Access-Control-Allow-Origin: *');
         header("Content-Type: application/json; charset=UTF-8");
         break;
+    case 'POST':
+        header('Access-Control-Allow-Origin: *');
+        post_lesson();
+        break;
+    case 'OPTIONS':
+        header('HTTP/1.1 200');
+        header('Access-Control-Allow-Methods: POST, GET, OPTIONS');
+        header('Access-Control-Allow-Origin: *');
+        header('Access-Control-Allow-Headers: Content-Type, Access-Control-Allow-Headers, Authorization, X-Requested-With');
+        header('Allow: GET, HEAD, POST');
+        break;
     default:
         header('HTTP/1.1 405');
-        header('Allow: GET, HEAD');
+        header('Allow: GET, HEAD, POST');
         break;
 }
 
