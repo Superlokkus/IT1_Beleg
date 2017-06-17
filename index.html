@@ -121,9 +121,11 @@
     <div class="row">
         <div class="col-md-12">
             <h1>Lektions-Upload</h1>
+            CSV, ohne Header, wobei der Dateiname den Lektionsnamen bestimmt.
+            Grammatik: Inhalt = (Deutsches Wort,Übersetzung,Aussprache \n)*
             <form enctype="multipart/form-data">
                 <input name="file" type="file"/>
-                <input type="button" value="Upload"/>
+                <input type="button" value="Lade Lektion hoch" id="upload_btn"/>
             </form>
             <progress></progress>
         </div>

@@ -199,6 +199,27 @@ $(function(){
     });
 
     callLessonPage();
+
+    $("#upload_btn").click(function () {
+        let upload = $.ajax("https://www2.htw-dresden.de/~s70357/print_everything.php/",{type: "POST",
+            data: new FormData($("form")[0]),
+            cache: false,
+            contentType: false,
+            processData: false
+        });
+
+        upload.fail((jqXHR, status, error) => {
+            console.log(status);
+            console.log(error);
+            alert("Uploading lesson failed with " + status + " and error " + error);
+            $("#send_results").button("reset");
+        });
+
+        upload.done((data,status) => {
+            console.log("Upload succeded with " + status);
+            callLessonPage();
+        });
+    });
 });
 
 
